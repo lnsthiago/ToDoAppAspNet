@@ -10,8 +10,8 @@ using TasksToDo.Infrastructure.Data;
 namespace TasksToDo.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20200219211122_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200220010548_CreateFieldIsCompleted")]
+    partial class CreateFieldIsCompleted
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,22 +31,26 @@ namespace TasksToDo.Infrastructure.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DeleteDate")
+                    b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Description")
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DoneDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DoneDate")
-                        .HasColumnType("datetime2");
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateDate")
+                    b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

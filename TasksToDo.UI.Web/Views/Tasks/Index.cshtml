@@ -1,0 +1,68 @@
+﻿@model IEnumerable<TasksToDo.ApplicationCore.Entity.Task>
+
+@{
+    ViewData["Title"] = "Tarefas";
+}
+
+<h1>Tarefas</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-info">Adicionar tarefa</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.CheckBoxFor(modelItem => item.IsCompleted)
+                </td>
+                <td>
+                    <a href="#" data-toggle="modal" class="btn-update-name" style="text-decoration: none; color: black" title="Editar nome">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @*<a asp-action="Edit" asp-route-id="@item.Id">Editar</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal" tabindex="-1" role="dialog" id="updateNameTaskModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">Alterar nome da tarefa</div>
+            <div class="modal-body">
+                <form action="@Url.Action("UpdateName", "Task")" method="post" id="form-update-name-task">
+                    <input type="hidden" name="id" value="1" />
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input class="form-control" type="text" name="name" value="Nome task" required />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary" form="form-update-name-task">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>

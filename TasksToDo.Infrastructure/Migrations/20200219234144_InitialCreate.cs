@@ -15,7 +15,7 @@ namespace TasksToDo.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
                     Status = table.Column<int>(nullable: false),
-                    Description = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UpdateDate = table.Column<DateTime>(nullable: false),
                     DeleteDate = table.Column<DateTime>(nullable: false),

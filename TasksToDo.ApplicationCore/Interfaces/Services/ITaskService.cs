@@ -8,7 +8,9 @@ namespace TasksToDo.ApplicationCore.Interfaces.Services
         Task GetById(int taskId);
         
         List<Task> GetAll();
-        
+
+        List<Task> GetAllOpen();
+
         Task Add(Task task);
 
         void Update(Task task);

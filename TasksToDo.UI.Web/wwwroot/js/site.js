@@ -1,4 +1,8 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿(function () {
+    $('.btn-update-name').on('click', function (e) {
+        var $modal = $('#updateNameTaskModal');
 
-// Write your JavaScript code.
+        $modal.modal('show');
+        e.preventDefault();
+    });
+})();

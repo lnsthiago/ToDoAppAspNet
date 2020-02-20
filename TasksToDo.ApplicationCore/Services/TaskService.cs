@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TasksToDo.ApplicationCore.Entity;
 using TasksToDo.ApplicationCore.Interfaces.Repositories;
 using TasksToDo.ApplicationCore.Interfaces.Services;
@@ -16,27 +18,35 @@ namespace TasksToDo.ApplicationCore.Services
 
         public Task Add(Task task)
         {
-            throw new System.NotImplementedException();
+            task.Status = Enums.TaskStatus.Open;
+            task.CreateDate = DateTime.Now;
+            task.IsCompleted = false;
+            return _taskRepository.Add(task);
         }
 
         public void Delete(int taskId)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public List<Task> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _taskRepository.GetAll().ToList();
+        }
+
+        public List<Task> GetAllOpen()
+        {
+            return _taskRepository.GetAll().Where(x => x.Status == Enums.TaskStatus.Open).ToList();
         }
 
         public Task GetById(int taskId)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Update(Task task)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

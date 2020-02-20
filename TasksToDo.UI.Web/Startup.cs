@@ -9,7 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TasksToDo.ApplicationCore.Interfaces.Repositories;
+using TasksToDo.ApplicationCore.Interfaces.Services;
+using TasksToDo.ApplicationCore.Services;
 using TasksToDo.Infrastructure.Data;
+using TasksToDo.Infrastructure.Repository;
 
 namespace TasksToDo.UI.Web
 {
@@ -30,6 +34,9 @@ namespace TasksToDo.UI.Web
                     Configuration.GetConnectionString("DefaultConnection")
                 )
             );
+
+            services.AddTransient<ITaskService, TaskService>();
+            services.AddTransient<ITaskRepository, TaskRepository>();
 
             services.AddControllersWithViews();
         }

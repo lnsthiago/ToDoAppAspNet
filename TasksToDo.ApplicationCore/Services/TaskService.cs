@@ -57,5 +57,14 @@ namespace TasksToDo.ApplicationCore.Services
                 _taskRepository.Add(task);
             }
         }
+
+        public void CompleteTask(int taskId)
+        {
+            var task = _taskRepository.GetById(taskId);
+            task.IsCompleted = true;
+            task.Status = Enums.TaskStatus.Done;
+            task.DoneDate = DateTime.Now;
+            _taskRepository.Update(task);
+        }
     }
 }

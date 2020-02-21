@@ -12,7 +12,6 @@
 <table class="table">
     <thead>
         <tr>
-            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
@@ -25,23 +24,23 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.CheckBoxFor(modelItem => item.IsCompleted)
-                </td>
-                <td>
-                    <a href="#" data-toggle="modal" class="btn-update-name" style="text-decoration: none; color: black" title="Editar nome">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @*<a asp-action="Edit" asp-route-id="@item.Id">Editar</a>*@
-                </td>
-            </tr>
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.CheckBoxFor(modelItem => item.IsCompleted)
+                <a href="#" class="btn-update-name"
+                   task-id="@item.Id"
+                   task-title="@item.Title"
+                   task-description="@item.Description"
+                   style="text-decoration: none; color: black"
+                   title="Editar titulo">
+                    <i class="fa fa-edit" taskId="@item.Id"></i>
+                </a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
@@ -49,13 +48,15 @@
 <div class="modal" tabindex="-1" role="dialog" id="updateNameTaskModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">Alterar nome da tarefa</div>
+            <div class="modal-header">Alterar titulo da tarefa</div>
             <div class="modal-body">
-                <form action="@Url.Action("UpdateName", "Task")" method="post" id="form-update-name-task">
-                    <input type="hidden" name="id" value="1" />
+                <form action="@Url.Action("UpdateTitleAndDescription", "Tasks")" method="post" id="form-update-name-task">
+                    <input type="hidden" id="taskId" name="taskId" value="" />
                     <div class="form-group">
-                        <label>Nome</label>
-                        <input class="form-control" type="text" name="name" value="Nome task" required />
+                        <label>Titulo</label>
+                        <input class="form-control" type="text" id="taskTitle" name="taskTitle" value="taskTitle" required />
+                        <label style="margin-top: 0.5rem">Descrição</label>
+                        <input class="form-control" type="text" id="taskDescription" name="taskDescription" value="taskDescription" />
                     </div>
                 </form>
             </div>

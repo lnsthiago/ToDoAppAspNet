@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TasksToDo.ApplicationCore.Interfaces.Services;
 
 namespace TasksToDo.UI.Web.Controllers
@@ -28,7 +27,7 @@ namespace TasksToDo.UI.Web.Controllers
         // POST: Tasks/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Description")] ApplicationCore.Entity.Task task)
+        public IActionResult Create([Bind("Title,Description")] ApplicationCore.Entity.Task task)
         {
             if (ModelState.IsValid)
             {
@@ -36,6 +35,16 @@ namespace TasksToDo.UI.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(task);
+        }
+
+        public IActionResult UpdateTitleAndDescription(int taskId, string taskTitle, string taskDescription)
+        {
+            var task = _taskService.GetById(taskId);
+            task.Title = taskTitle;
+            task.Description = taskDescription;
+            _taskService.Update(task);
+
+            return RedirectToAction("Index");
         }
     }
 }

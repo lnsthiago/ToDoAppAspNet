@@ -1,0 +1,152 @@
+﻿@model IEnumerable<TasksToDo.ApplicationCore.Entity.Task>
+
+@{
+    ViewData["Title"] = "Tarefas";
+}
+
+<h1>Tarefas</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-info">Adicionar tarefa</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <a href="#"
+                       style="text-decoration: none; color: black"
+                       title="Concluir task"
+                       onclick="completeTask(@item.Id)">
+                        <i class="fa fa-square-o fa-lg" style="color: green"></i>
+                    </a>
+                    <a href="#" class="btn-update-name"
+                       task-id="@item.Id"
+                       task-title="@item.Title"
+                       task-description="@item.Description"
+                       style="text-decoration: none; color: black"
+                       title="Editar titulo">
+                        <i class="fa fa-edit fa-lg"></i>
+                    </a>
+                    <a href="#"
+                       style="text-decoration: none; color: black"
+                       title="Excluir task"
+                       onclick="removeTask(@item.Id)">
+                        <i class="fa fa-times fa-lg" style="color: red"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal" tabindex="-1" role="dialog" id="updateNameTaskModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">Alterar titulo da tarefa</div>
+            <div class="modal-body">
+                <form action="@Url.Action("UpdateTitleAndDescription", "Tasks")" method="post" id="form-update-name-task">
+                    <input type="hidden" id="taskId" name="taskId" value="" />
+                    <div class="form-group">
+                        <label>Titulo</label>
+                        <input class="form-control" type="text" id="taskTitle" name="taskTitle" value="taskTitle" required />
+                        <label style="margin-top: 0.5rem">Descrição</label>
+                        <input class="form-control" type="text" id="taskDescription" name="taskDescription" value="taskDescription" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary" form="form-update-name-task">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function completeTask(taskId) {
+        Swal.fire({
+            title: 'Concluir tarefa?',
+            text: 'Você tem certeza que deseja concluir essa tarefa?',
+            type: 'success',
+            showCancelButton: true,
+            cancelButtonText: 'Não',
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Sim',
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    url: '@Url.Action("CompleteTask", "Tasks")',
+                    method: 'POST',
+                    data: {
+                        taskId: taskId
+                    },
+                    success: function () {
+                        window.location.href = '@Url.Action("Index", "Tasks")'
+                    },
+                    fail: function () {
+                        swal({
+                            type: 'error',
+                            title: 'Atenção',
+                            text: 'Ocorreu um erro ao executar a ação',
+                            onClose: () => { }
+                        });
+                    }
+                })
+            }
+        });
+    }
+
+    function removeTask(taskId) {
+        Swal.fire({
+            title: 'Excluir tarefa?',
+            text: 'Você tem certeza que deseja excluir essa tarefa?',
+            type: 'success',
+            showCancelButton: true,
+            cancelButtonText: 'Não',
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Sim',
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    url: '@Url.Action("RemoveTask", "Tasks")',
+                    method: 'POST',
+                    data: {
+                        taskId: taskId
+                    },
+                    success: function () {
+                        window.location.href = '@Url.Action("Index", "Tasks")'
+                    },
+                    fail: function () {
+                        swal({
+                            type: 'error',
+                            title: 'Atenção',
+                            text: 'Ocorreu um erro ao executar a ação',
+                            onClose: () => { }
+                        });
+                    }
+                })
+            }
+        });
+    }
+</script>

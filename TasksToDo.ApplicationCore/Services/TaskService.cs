@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TasksToDo.ApplicationCore.Entity;
 using TasksToDo.ApplicationCore.Interfaces.Repositories;
 using TasksToDo.ApplicationCore.Interfaces.Services;
@@ -16,27 +18,72 @@ namespace TasksToDo.ApplicationCore.Services
 
         public Task Add(Task task)
         {
-            throw new System.NotImplementedException();
+            task.Status = Enums.TaskStatus.Open;
+            task.CreateDate = DateTime.Now;
+            task.IsCompleted = false;
+            return _taskRepository.Add(task);
         }
 
         public void Delete(int taskId)
         {
-            throw new System.NotImplementedException();
+            var task = _taskRepository.GetById(taskId);
+            task.Status = Enums.TaskStatus.Deleted;
+            task.DeleteDate = DateTime.Now;
+            _taskRepository.Update(task);
         }
 
         public List<Task> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _taskRepository.GetAll().ToList();
+        }
+
+        public List<Task> GetAllOpen()
+        {
+            return _taskRepository.GetAll()
+                .Where(x => x.Status == Enums.TaskStatus.Open)
+                .OrderBy(x => x.CreateDate).ToList();
+        }
+
+        public List<Task> GetAllCompletedTasks()
+        {
+            return _taskRepository.GetAll()
+                .Where(x => x.Status == Enums.TaskStatus.Done)
+                .OrderBy(x => x.CreateDate).ToList();
+        }
+
+        public List<Task> GetAllDeletedTasks()
+        {
+            return _taskRepository.GetAll()
+                .Where(x => x.Status == Enums.TaskStatus.Deleted)
+                .OrderBy(x => x.CreateDate).ToList();
         }
 
         public Task GetById(int taskId)
         {
-            throw new System.NotImplementedException();
+            return _taskRepository.GetById(taskId);
         }
 
         public void Update(Task task)
         {
-            throw new System.NotImplementedException();
+            if (task.Id > 0)
+            {
+                task.UpdateDate = DateTime.Now;
+                _taskRepository.Update(task);
+            }
+            else
+            {
+                task.CreateDate = DateTime.Now;
+                _taskRepository.Add(task);
+            }
+        }
+
+        public void CompleteTask(int taskId)
+        {
+            var task = _taskRepository.GetById(taskId);
+            task.IsCompleted = true;
+            task.Status = Enums.TaskStatus.Done;
+            task.DoneDate = DateTime.Now;
+            _taskRepository.Update(task);
         }
     }
 }

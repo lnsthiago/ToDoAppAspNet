@@ -41,12 +41,21 @@ namespace TasksToDo.ApplicationCore.Services
 
         public Task GetById(int taskId)
         {
-            throw new NotImplementedException();
+            return _taskRepository.GetById(taskId);
         }
 
         public void Update(Task task)
         {
-            throw new NotImplementedException();
+            if (task.Id > 0)
+            {
+                task.UpdateDate = DateTime.Now;
+                _taskRepository.Update(task);
+            }
+            else
+            {
+                task.CreateDate = DateTime.Now;
+                _taskRepository.Add(task);
+            }
         }
     }
 }

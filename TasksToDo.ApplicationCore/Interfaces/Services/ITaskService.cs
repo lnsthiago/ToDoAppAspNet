@@ -16,5 +16,7 @@ namespace TasksToDo.ApplicationCore.Interfaces.Services
         void Update(Task task);
 
         void Delete(int taskId);
+
+        void CompleteTask(int taskId);
     }
 }

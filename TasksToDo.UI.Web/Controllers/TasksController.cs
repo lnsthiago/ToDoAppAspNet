@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using TasksToDo.ApplicationCore.Enums;
 using TasksToDo.ApplicationCore.Interfaces.Services;
 
 namespace TasksToDo.UI.Web.Controllers
@@ -45,6 +47,11 @@ namespace TasksToDo.UI.Web.Controllers
             _taskService.Update(task);
 
             return RedirectToAction("Index");
+        }
+
+        public void CompleteTask(int taskId)
+        {
+            _taskService.CompleteTask(taskId);
         }
     }
 }

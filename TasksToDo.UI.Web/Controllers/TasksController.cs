@@ -20,6 +20,16 @@ namespace TasksToDo.UI.Web.Controllers
             return View(_taskService.GetAllOpen());
         }
 
+        public IActionResult CompletedTasks()
+        {
+            return View(_taskService.GetAllCompletedTasks());
+        }
+
+        public IActionResult DeletedTasks()
+        {
+            return View(_taskService.GetAllDeletedTasks());
+        }
+
         // GET: Tasks/Create
         public IActionResult Create()
         {
@@ -52,6 +62,11 @@ namespace TasksToDo.UI.Web.Controllers
         public void CompleteTask(int taskId)
         {
             _taskService.CompleteTask(taskId);
+        }
+
+        public void RemoveTask(int taskId)
+        {
+            _taskService.Delete(taskId);
         }
     }
 }

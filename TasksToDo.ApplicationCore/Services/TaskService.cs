@@ -26,7 +26,10 @@ namespace TasksToDo.ApplicationCore.Services
 
         public void Delete(int taskId)
         {
-            throw new NotImplementedException();
+            var task = _taskRepository.GetById(taskId);
+            task.Status = Enums.TaskStatus.Deleted;
+            task.DeleteDate = DateTime.Now;
+            _taskRepository.Update(task);
         }
 
         public List<Task> GetAll()
@@ -36,7 +39,23 @@ namespace TasksToDo.ApplicationCore.Services
 
         public List<Task> GetAllOpen()
         {
-            return _taskRepository.GetAll().Where(x => x.Status == Enums.TaskStatus.Open).ToList();
+            return _taskRepository.GetAll()
+                .Where(x => x.Status == Enums.TaskStatus.Open)
+                .OrderBy(x => x.CreateDate).ToList();
+        }
+
+        public List<Task> GetAllCompletedTasks()
+        {
+            return _taskRepository.GetAll()
+                .Where(x => x.Status == Enums.TaskStatus.Done)
+                .OrderBy(x => x.CreateDate).ToList();
+        }
+
+        public List<Task> GetAllDeletedTasks()
+        {
+            return _taskRepository.GetAll()
+                .Where(x => x.Status == Enums.TaskStatus.Deleted)
+                .OrderBy(x => x.CreateDate).ToList();
         }
 
         public Task GetById(int taskId)

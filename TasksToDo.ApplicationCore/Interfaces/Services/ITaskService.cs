@@ -11,6 +11,10 @@ namespace TasksToDo.ApplicationCore.Interfaces.Services
 
         List<Task> GetAllOpen();
 
+        List<Task> GetAllCompletedTasks();
+
+        List<Task> GetAllDeletedTasks();
+
         Task Add(Task task);
 
         void Update(Task task);

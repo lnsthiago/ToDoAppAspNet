@@ -30,14 +30,25 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.CheckBoxFor(modelItem => item.IsCompleted, new { @onClick = "completeTask('"+item.Id+"')" })
+                    <a href="#"
+                       style="text-decoration: none; color: black"
+                       title="Concluir task"
+                       onclick="completeTask(@item.Id)">
+                        <i class="fa fa-square-o fa-lg" style="color: green"></i>
+                    </a>
                     <a href="#" class="btn-update-name"
                        task-id="@item.Id"
                        task-title="@item.Title"
                        task-description="@item.Description"
                        style="text-decoration: none; color: black"
                        title="Editar titulo">
-                        <i class="fa fa-edit" taskId="@item.Id"></i>
+                        <i class="fa fa-edit fa-lg"></i>
+                    </a>
+                    <a href="#"
+                       style="text-decoration: none; color: black"
+                       title="Excluir task"
+                       onclick="removeTask(@item.Id)">
+                        <i class="fa fa-times fa-lg" style="color: red"></i>
                     </a>
                 </td>
             </tr>
@@ -86,8 +97,42 @@
                     url: '@Url.Action("CompleteTask", "Tasks")',
                     method: 'POST',
                     data: {
-                        taskId: taskId,
-                        taskStatus: '@TasksToDo.ApplicationCore.Enums.TaskStatus.Done'
+                        taskId: taskId
+                    },
+                    success: function () {
+                        window.location.href = '@Url.Action("Index", "Tasks")'
+                    },
+                    fail: function () {
+                        swal({
+                            type: 'error',
+                            title: 'Atenção',
+                            text: 'Ocorreu um erro ao executar a ação',
+                            onClose: () => { }
+                        });
+                    }
+                })
+            }
+        });
+    }
+
+    function removeTask(taskId) {
+        Swal.fire({
+            title: 'Excluir tarefa?',
+            text: 'Você tem certeza que deseja excluir essa tarefa?',
+            type: 'success',
+            showCancelButton: true,
+            cancelButtonText: 'Não',
+            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Sim',
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    url: '@Url.Action("RemoveTask", "Tasks")',
+                    method: 'POST',
+                    data: {
+                        taskId: taskId
                     },
                     success: function () {
                         window.location.href = '@Url.Action("Index", "Tasks")'
